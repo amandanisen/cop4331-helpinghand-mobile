@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { FloatingAction } from "react-native-floating-action";
 import VolunteerCard from "./volunteetCard";
@@ -16,6 +16,20 @@ import { Card, ListItem, Icon } from "react-native-elements";
 
 export default function volunteerTask() {
   const navigation = useNavigation();
+  const [posts, setPosts] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [selected, setSelected] = useState({});
+  let idTrack = useRef(null);
+  var user_data=localStorage.getItem("user_data");
+
+  useEffect(() => {
+    if (tasks && tasks.length > 0 && Object.values(selected).length === 0) {
+      let taskObj = {};
+      tasks.forEach((task) => (taskObj[task.id] = false));
+      setSelected(taskObj);
+    }
+  }, [tasks, selected]);
+
 
   //function to render the card template / replace with actual json obj returned
   function renderCards() {
