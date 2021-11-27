@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { FloatingAction } from "react-native-floating-action";
 import VolunteerCard from "./volunteetCard";
+import { useLocation } from "react-router-dom";
+
 import {
   View,
   Text,
@@ -16,18 +18,93 @@ import { Card, ListItem, Icon } from "react-native-elements";
 
 export default function volunteerTask() {
   const navigation = useNavigation();
+  const [posts, setPosts] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [selected, setSelected] = useState({});
+  let idTrack = useRef(null);
+  var user_data=localStorage.getItem("user_data");
+
+
+  useEffect(() => {
+    if (tasks && tasks.length > 0 && Object.values(selected).length === 0) {
+      let taskObj = {};
+      tasks.forEach((task) => (taskObj[task.id] = false));
+      setSelected(taskObj);
+    }
+  }, [tasks, selected]);
+
+  useEffect(() =>{
+    async function handleSubmit(){
+      var obj = {email:'alexrutledge1030@gmail.com'};
+      var js=JSON.stringify(obj);
+      console.log(js);
+
+      try{
+        const response = await fetch("https://helpinghand-cop4331.herokuapp.com/vol/tasks",{
+          method: "POST",
+          headers: {"Content-Type" : "application/json"},
+          body : js,
+        });
+        var res=JSON.parse(await response.text() );
+        if (res.error != null){
+          console.log(res.error);
+        } else{
+          console.log("success");
+          
+          if(res != "nos such user found"){
+            setPosts(res);
+          } else{
+            console.log("The call might have failed above buts its okay, there were no tasks");
+          }
+          return res;
+        }
+      } catch (e){
+        alert(e.toString());
+        return ;
+      }
+    }
+      //test
+    handleSubmit();
+  }, []);
+
+  const handleSelect = (id) => {
+    let newSelected = { ...selected };
+    if (idTrack.current === null) {
+      idTrack.current = id;
+    }
+    if (selected[id]) {
+      // We are leaving the task
+      //Socket.send(JSON.stringify({topic: "task", action: "leave", message: {id: id, action: "Leaving"}}));
+      newSelected[id] = false;
+      setSelected(newSelected);
+    } else {
+      // We are joining the task
+      if (idTrack.current !== id) {
+        //Socket.send(JSON.stringify({topic: "task", action: "leave", message: {id: idTrack.current, action: "Leaving"}}));
+      }
+      //Socket.send(JSON.stringify({topic: "task", action: "join", message: {id: id, action: "Joining"}}));
+      for (const prop in newSelected) {
+        newSelected[prop] = false;
+      }
+      newSelected[id] = true;
+      setSelected(newSelected);
+    }
+    idTrack.current = id;
+  };
+
 
   //function to render the card template / replace with actual json obj returned
   function renderCards() {
-    return areasTest.map((task) => (
+    console.log(posts);
+
+    return posts.map((tasks,index) => (
       <VolunteerCard
-        key={task.id}
-        name={task.name}
-        description={task.description}
-        location={task.location}
-        miles={task.miles}
-        numVol={task.numVol}
-        maxVol={task.maxVol}
+        key={tasks._id}
+        name={tasks.task_name}
+        description={tasks.task_description}
+        task_location={tasks.task_location.coordinates}
+        maxVol={tasks.max_slots}
+        numVol={tasks.slots_available}
       />
     ));
   }

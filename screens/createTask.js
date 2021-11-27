@@ -32,7 +32,7 @@ export default function createTask() {
       max_slots: data.volunteers,
       latitude: 28.6,
       longitude: 81.2,
-      email: 'alexrutledge1030@gmail.com' ,
+      coordID: 'alexrutledge1030@gmail.com' ,
     }).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
     });

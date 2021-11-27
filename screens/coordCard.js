@@ -24,14 +24,11 @@ export default function CoordCard(props) {
         {props.name}
       </Card.Title>
       <Card.Divider />
-    
       <Text style={{ marginBottom: 10, color: "#808080" }}>
-        {props.numVol + " Slots Left " +" --- " + props.maxVol + " Total Slots"}
+        {props.location + " - " + props.miles + " away"}
       </Text>
+      
       <Text style={{ marginBottom: 10 }}>{props.description}</Text>
-      <Text style={{ marginBottom: 10, color: "#808080" }}>
-        {"Coordinates:  " +props.task_location[0] + "     " + props.task_location[1]}
-      </Text>
       <Button
         icon={<Icon name="check" color="#ffffff" />}
         onPress={() => closeTask()}
@@ -42,7 +39,7 @@ export default function CoordCard(props) {
           marginBottom: 0,
           backgroundColor: "#013d38",
         }}
-        title="Close Task"
+        title="Done"
       />
     </Card>
   );
