@@ -96,26 +96,56 @@ const SignInScreen = ({ navigation }) => {
     }
   };
 
+  
   const loginHandle = (userName, password) => {
+    //console.log(userName)
+    //console.log(password)
     console.log(data.role)
-    // const foundUser = Users.filter( item => {
-    //     return userName == item.username && password == item.password;
-    // } );
-    // if ( data.username.length == 0 || data.password.length == 0 ) {
-    //     Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
-    //         {text: 'Okay'}
-    //     ]);
-    //     return;
-    // }
-    // if ( foundUser.length == 0 ) {
-    //     Alert.alert('Invalid User!', 'Username or password is incorrect.', [
-    //         {text: 'Okay'}
-    //     ]);
-    //     return;
-    // }
-    // signIn(foundUser);
+      async function login(){
+        var obj = {email:userName,password:password};
+        var js=JSON.stringify(obj);
+        //console.log(js);
+        try{
+          const response = await fetch("https://helpinghand-cop4331.herokuapp.com/vol/login",{
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body : js,
+          });
+          var res=JSON.parse(await response.text() );
+          if (res.error != null){
+            console.log(res.error);
+            console.log(res.email)
+          } else{
+            var user = {
+              first_name: res.first_name,
+              last_name: res.last_name,
+              id: res.id,
+              email:res.email
+            };
+            localStorage.setItem("user_data", JSON.stringify(user));  
+            console.log(user.email)
+            if(res.id!=-1 && data.role == "coordinator"&& res.id!=null)
+            navigation.navigate("CoordinatorTasks");
+
+            else if(res.id!=-1&& data.role == "volunteer")
+            navigation.navigate("VolunteerTasks");
+            else if(res.id== -1)
+            alert("incorrect username or password")
+          }
+            console.log(res)
+            console.log(res.id)
+        } catch (e){
+          alert(e.toString());
+          return ;
+        }
+      }
+        //test
+      login();
+   ;
+    //handleMessage(null);
   };
 
+  
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
