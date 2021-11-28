@@ -19,9 +19,12 @@ import Feather from 'react-native-vector-icons/Feather';
  const CoordinatorSignup = ({navigation}) => {
 
     const [data, setData] = React.useState({
-        username: '',
-        password: '',
+        firstName: '',
+        lastName: '',
+        password:'',
         confirm_password: '',
+        email: '',
+        location: '',
         check_textInputChange: false,
         secureTextEntry: true,
         confirm_secureTextEntry: true,
@@ -31,17 +34,68 @@ import Feather from 'react-native-vector-icons/Feather';
         if( val.length !== 0 ) {
             setData({
                 ...data,
-                username: val,
+                firstName: val,
                 check_textInputChange: true
             });
         } else {
             setData({
                 ...data,
-                username: val,
+                firstName: val,
                 check_textInputChange: false
             });
         }
     }
+
+    const textInputChange2 = (val) => {
+        if( val.length !== 0 ) {
+            setData({
+                ...data,
+                lastName: val,
+                check_textInputChange: true
+            });
+        } else {
+            setData({
+                ...data,
+                lastName: val,
+                check_textInputChange: false
+            });
+        }
+    }
+
+
+    const textInputChange3 = (val) => {
+        if( val.length !== 0 ) {
+            setData({
+                ...data,
+                email: val,
+                check_textInputChange: true
+            });
+        } else {
+            setData({
+                ...data,
+                email: val,
+                check_textInputChange: false
+            });
+        }
+    }
+
+    const textInputChange4 = (val) => {
+        if( val.length !== 0 ) {
+            setData({
+                ...data,
+                location: val,
+                check_textInputChange: true
+            });
+        } else {
+            setData({
+                ...data,
+                location: val,
+                check_textInputChange: false
+            });
+        }
+    }
+
+
 
     const handlePasswordChange = (val) => {
         setData({
@@ -71,6 +125,47 @@ import Feather from 'react-native-vector-icons/Feather';
         });
     }
 
+    const registerCoord = () => {
+        //console.log(userName)
+        //console.log(password)
+        //console.log(data.role)
+          async function register(){
+            var obj = {first_name:data.firstName,last_name:data.lastName,email:data.email,password1:data.password, password2:data.confirm_password};
+            var js=JSON.stringify(obj);
+            console.log(js);
+            try{
+              const response = await fetch("https://helpinghand-cop4331.herokuapp.com/coord/register",{
+                method: "POST",
+                headers: {"Content-Type" : "application/json"},
+                body : js,
+              });
+              var res=JSON.parse(await response.text() );
+              if (res.error != null){
+                console.log(res.error);
+              }   
+                if(res.id ==-1)
+                {
+                    alert("Sign up failed try again!")
+                }
+
+                if(res.id>0){
+                navigation.navigate("Login");}
+                console.log(res)
+                console.log(res.id)
+                //console.log(res.username)
+                //console.log(res.password)
+            } catch (e){
+              alert(e.toString());
+              return ;
+              
+            }
+          }
+            //test
+          register();
+       ;
+        //handleMessage(null);
+      };
+
     return (
       <View style={styles.container}>
           <StatusBar backgroundColor='#009387' barStyle="light-content"/>
@@ -83,7 +178,7 @@ import Feather from 'react-native-vector-icons/Feather';
             style={styles.footer}
         >
             <ScrollView>
-             <Text style={styles.text_footer}>Full Name</Text>
+             <Text style={styles.text_footer}>First and Last Name</Text>
              <View style={styles.action}>
                  <FontAwesome 
                     name="user-o"
@@ -91,10 +186,34 @@ import Feather from 'react-native-vector-icons/Feather';
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Your full name"
+                    placeholder="Your first name"
                     style={styles.textInput}
                     autoCapitalize="none"
                     onChangeText={(val) => textInputChange(val)}
+                />
+                {data.check_textInputChange ? 
+                <Animatable.View
+                    animation="bounceIn"
+                >
+                    {/* <Feather 
+                        name="check-circle"
+                        color="green"
+                        size={20}
+                    /> */}
+                </Animatable.View>
+                : null}
+            </View>
+            <View style={styles.action}>
+                 <FontAwesome 
+                    name="user-o"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Your last name"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => textInputChange2(val)}
                 />
                 {data.check_textInputChange ? 
                 <Animatable.View
@@ -119,7 +238,7 @@ import Feather from 'react-native-vector-icons/Feather';
                     placeholder="Your Email"
                     style={styles.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => textInputChange(val)}
+                    onChangeText={(val) => textInputChange3(val)}
                 />
                 {data.check_textInputChange ? 
                 <Animatable.View
@@ -151,6 +270,40 @@ import Feather from 'react-native-vector-icons/Feather';
                 />
                 <TouchableOpacity
                     onPress={updateSecureTextEntry}
+                  
+                >
+                    {data.secureTextEntry ? 
+                    <Feather 
+                        name="eye-off"
+                        color="grey"
+                        size={20}
+                    />
+                    :
+                    <Feather 
+                        name="eye"
+                        color="grey"
+                        size={20}
+                    />
+                    }
+                </TouchableOpacity>
+            </View>
+ 
+            <View style={styles.action}>
+                <Feather 
+                    name="lock"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Confirm Password"
+                    secureTextEntry={data.secureTextEntry ? true : false}
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => handleConfirmPasswordChange(val)}
+                />
+                <TouchableOpacity
+                    onPress={updateSecureTextEntry}
+                    
                 >
                     {data.secureTextEntry ? 
                     <Feather 
@@ -168,6 +321,8 @@ import Feather from 'react-native-vector-icons/Feather';
                 </TouchableOpacity>
             </View>
 
+        
+
             <Text style={[styles.text_footer, {marginTop: 25}]}>Location</Text>
              <View style={styles.action}>
              <Feather 
@@ -179,7 +334,7 @@ import Feather from 'react-native-vector-icons/Feather';
                     placeholder="Your location"
                     style={styles.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => textInputChange(val)}
+                    onChangeText={(val) => textInputChange4(val)}
                 />
                 {data.check_textInputChange ? 
                 <Animatable.View
@@ -209,7 +364,9 @@ import Feather from 'react-native-vector-icons/Feather';
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={() => navigation.goBack()}
+                      onPress={() => {
+                        registerCoord();
+                      }}
                     style={[styles.signIn, {
                         borderColor: '#009387',
                         borderWidth: 1,
