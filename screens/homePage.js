@@ -68,21 +68,16 @@ export default function homePage() {
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigateToLogin()}>
+
+            <TouchableOpacity onPress={() => navigateToVolunteerRegister()}>
               <Text style={{ color: "#FFFFFF", marginTop: 15 }}>
-                Already a Member/Login
+                Become a Volunteer!
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => test()}>
+            <TouchableOpacity onPress={() => navigateToCoordinatorRegister()}>
               <Text style={{ color: "#FFFFFF", marginTop: 15 }}>
-                Coordinator testing (DELETE ME)
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => test1()}>
-              <Text style={{ color: "#FFFFFF", marginTop: 15 }}>
-                Volunteer testing (DELETE ME)
+                Become a Coordinator!
               </Text>
             </TouchableOpacity>
           </View>
