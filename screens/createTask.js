@@ -15,29 +15,51 @@ export default function createTask() {
     name: "",
     details: "",
     volunteers: "",
-    longitude: "",
-    latitude: "",
-    date: "",
+    lon: "",
+    lat:"",
+    date:"",
+    email:""
   });
-  function handlePress() {
-    //api call to submit the data in the form
-    //console log to verify inputs for debugging
-    postData("https://helpinghand-cop4331.herokuapp.com/task/create", {
-      name: data.name,
-      description: data.details,
-      max_slots: data.volunteers,
-      latitude: data.latitude,
-      longitude: data.longitude,
-      email: 'alexrutledge1030@gmail.com' ,
-      date: data.date,
-    }).then((data) => {
-      console.log(data); // JSON data parsed by `data.json()` call
-    });
-    console.log(data.name, data.details, data.volunteers, data.longitude, data.latitude,data.date);
-    navigateToTaskList();
-  }
-  // Example POST method implementation:
-  async function postData(url = '', data = {}) {
+   
+  var user_data= JSON.parse(localStorage.getItem("user_data"))
+   data.email = user_data.email
+   console.log(data.email)
+  const handlePress = () => {
+    //console.log(userName)
+    //console.log(password)
+      async function create(){
+        var obj = {name:data.name,description:data.details,date:data.date,max_slots:data.volunteers,
+                   latitude:data.lat,longitude:data.lon,email:data.email};
+                   console.log(data.lon)
+        var js=JSON.stringify(obj);
+        //console.log(js);
+        try{
+          const response = await fetch("https://helpinghand-cop4331.herokuapp.com/task/create",{
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body : js,
+          });
+          var res=JSON.parse(await response.text());
+          if (res.error != null){
+            console.log(res.error);  
+          } 
+            
+          }
+             catch (e){
+          alert(e.toString());
+          return ;
+        }
+      }
+        //test
+      create();
+   ;
+    //handleMessage(null);
+  };
+
+
+
+  //   Example POST method implementation:
+  /*   async function postData(url = '', data = {}) {
     console.log(url, data);
     // Default options are marked with *
     const response = await fetch(url, {
@@ -54,7 +76,10 @@ export default function createTask() {
       body: JSON.stringify(data), // body data type must match "Content-Type" header
     });
     return response.json(); // parses JSON response into native JavaScript objects
-  }
+  }    */
+
+
+
   //function to navigate back to task list on cancel
   function navigateToTaskList() {
     navigation.navigate("CoordinatorTasks");
@@ -78,16 +103,17 @@ export default function createTask() {
       volunteers: val,
     });
   };
-  const longitudeInputChange = (val) => {
+  const locationInputChange = (val) => {
     setData({
       ...data,
-      longitude: val,
+      lat: parseFloat(val),
     });
   };
-  const latitudeInputChange = (val) => {
+
+  const locationInputChange2 = (val) => {
     setData({
       ...data,
-      latitude: val,
+      lon: parseFloat(val),
     });
   };
   const DateInputChange = (val) => {
@@ -122,26 +148,26 @@ export default function createTask() {
           onChangeText={(val) => detailsInputChange(val)}
         />
         <TextInput
-          placeholder="Number of Volunteers Needed"
+          placeholder="How many volunteers needed?"
           placeholderTextColor={"#D6D6D6"}
           style={styles.textInput}
           autoCapitalize="none"
           onChangeText={(val) => volunteersInputChange(val)}
         />
         <TextInput
-          placeholder="Longitude"
-          placeholderTextColor={"#D6D6D6"}
-          style={styles.textInput}
-          autoCapitalize="none"
-          onChangeText={(val) => longitudeInputChange(val)}
-        />       
-         <TextInput
           placeholder="Latitude"
           placeholderTextColor={"#D6D6D6"}
           style={styles.textInput}
           autoCapitalize="none"
-          onChangeText={(val) => latitudeInputChange(val)}
-        />        
+          onChangeText={(val) => locationInputChange(val)}
+        />   
+         <TextInput
+          placeholder="Longitude"
+          placeholderTextColor={"#D6D6D6"}
+          style={styles.textInput}
+          autoCapitalize="none"
+          onChangeText={(val) => locationInputChange2(val)}
+        />             
         <TextInput
         placeholder="Date"
         placeholderTextColor={"#D6D6D6"}
