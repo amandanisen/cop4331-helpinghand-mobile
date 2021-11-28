@@ -19,6 +19,7 @@ export default function createTask() {
     details: "",
     volunteers: "",
     location: "",
+    date: "",
   });
 
   function handlePress() {
@@ -32,12 +33,13 @@ export default function createTask() {
       max_slots: data.volunteers,
       latitude: 28.6,
       longitude: 81.2,
-      coordID: 'alexrutledge1030@gmail.com' ,
+      email: 'alexrutledge1030@gmail.com' ,
+      date: data.date,
     }).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
     });
 
-    console.log(data.name, data.details, data.volunteers, data.location);
+    console.log(data.name, data.details, data.volunteers, data.location,data.date);
     navigateToTaskList();
   }
 
@@ -91,7 +93,12 @@ export default function createTask() {
       location: val,
     });
   };
-
+  const DateInputChange = (val) => {
+    setData({
+      ...data,
+      date: val,
+    });
+  };
   return (
     <View
       style={{
@@ -131,6 +138,13 @@ export default function createTask() {
           style={styles.textInput}
           autoCapitalize="none"
           onChangeText={(val) => locationInputChange(val)}
+        />        
+        <TextInput
+        placeholder="Date"
+        placeholderTextColor={"#d6d6d6"}
+        style={styles.textInput}
+        autoCapitalize="none"
+        onChangeText={(val) => DateInputChange(val)}
         />
 
         <TouchableOpacity

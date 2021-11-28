@@ -40,7 +40,7 @@ export default function volunteerTask() {
       console.log(js);
 
       try{
-        const response = await fetch("https://helpinghand-cop4331.herokuapp.com/vol/tasks",{
+        const response = await fetch("https://helpinghand-cop4331.herokuapp.com/vol/tasks" ,{
           method: "POST",
           headers: {"Content-Type" : "application/json"},
           body : js,
@@ -54,7 +54,7 @@ export default function volunteerTask() {
           if(res != "nos such user found"){
             setPosts(res);
           } else{
-            console.log("The call might have failed above buts its okay, there were no tasks");
+            console.log("Thes call might have failed above buts its okay, there were no tasks");
           }
           return res;
         }

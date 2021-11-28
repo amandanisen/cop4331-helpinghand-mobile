@@ -25,8 +25,13 @@ export default function CoordCard(props) {
       </Card.Title>
       <Card.Divider />
       <Text style={{ marginBottom: 10, color: "#808080" }}>
-        {props.location + " - " + props.miles + " away"}
+        {props.numVol + " Slots Left " +" --- " + props.maxVol + " Total Slots"}
       </Text>
+      <Text style={{ marginBottom: 10 }}>{props.description}</Text>
+      <Text style={{ marginBottom: 10, color: "#808080" }}>
+        {"Coordinates:  " +props.task_location[0] + "     " + props.task_location[1]}
+      </Text>
+
       
       <Text style={{ marginBottom: 10 }}>{props.description}</Text>
       <Button
