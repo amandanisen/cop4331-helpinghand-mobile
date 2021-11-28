@@ -22,7 +22,7 @@ export default function volunteerTask() {
   const [tasks, setTasks] = useState([]);
   const [selected, setSelected] = useState({});
   let idTrack = useRef(null);
-  var user_data=localStorage.getItem("user_data");
+  var user_data= JSON.parse(localStorage.getItem("user_data"))
 
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function volunteerTask() {
 
   useEffect(() =>{
     async function handleSubmit(){
-      var obj = {email:'alexrutledge1030@gmail.com'};
+      var obj = {email:user_data.email};
       var js=JSON.stringify(obj);
       console.log(js);
 
