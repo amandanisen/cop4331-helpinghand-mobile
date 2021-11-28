@@ -122,14 +122,19 @@ const SignInScreen = ({ navigation }) => {
               id: res.id,
               email:res.email
             };
+            
             localStorage.setItem("user_data", JSON.stringify(user));  
             console.log(user.email)
-            if(res.id!=-1 && data.role == "coordinator"&& res.id!=null)
-            navigation.navigate("CoordinatorTasks");
+            
+             if(res.id!=-1 && data.role == "volunteer" && res.id!=null)
+            { navigation.navigate("VolunteerTasks");}
 
-            else if(res.id!=-1&& data.role == "volunteer")
-            navigation.navigate("VolunteerTasks");
-            else if(res.id== -1)
+
+            if(res.id!=-1 && data.role == "coordinator" && res.id!=null)
+            { navigation.navigate("CoordinatorTasks");}
+
+
+            if(res.id== -1)
             alert("incorrect username or password")
           }
             console.log(res)
