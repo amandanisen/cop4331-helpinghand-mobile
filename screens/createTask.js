@@ -1,5 +1,4 @@
 import React from "react";
-
 import { useNavigation } from "@react-navigation/native";
 import {
   View,
@@ -9,10 +8,8 @@ import {
   Platform,
   StyleSheet,
 } from "react-native";
-
 export default function createTask() {
   const navigation = useNavigation();
-
   //data will hold all of the text unput data
   const [data, setData] = React.useState({
     name: "",
@@ -21,12 +18,9 @@ export default function createTask() {
     location: "",
     date: "",
   });
-
   function handlePress() {
     //api call to submit the data in the form
-
     //console log to verify inputs for debugging
-
     postData("https://helpinghand-cop4331.herokuapp.com/task/create", {
       name: data.name,
       description: data.details,
@@ -38,11 +32,9 @@ export default function createTask() {
     }).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
     });
-
     console.log(data.name, data.details, data.volunteers, data.location,data.date);
     navigateToTaskList();
   }
-
   // Example POST method implementation:
   async function postData(url = '', data = {}) {
     console.log(url, data);
@@ -66,7 +58,6 @@ export default function createTask() {
   function navigateToTaskList() {
     navigation.navigate("CoordinatorTasks");
   }
-
   //setters for tex inputs
   const nameInputChange = (val) => {
     setData({
@@ -86,7 +77,6 @@ export default function createTask() {
       volunteers: val,
     });
   };
-
   const locationInputChange = (val) => {
     setData({
       ...data,
@@ -110,43 +100,41 @@ export default function createTask() {
     >
       <View style={styles.header}>
         <Text style={styles.text_header}>New Task</Text>
-
         <TextInput
           placeholder="Task Name"
-          placeholderTextColor={"#d6d6d6"}
+          placeholderTextColor={"#D6D6D6"}
           style={styles.textInput}
           autoCapitalize="none"
           onChangeText={(val) => nameInputChange(val)}
         />
         <TextInput
           placeholder="Task Details"
-          placeholderTextColor={"#d6d6d6"}
+          placeholderTextColor={"#D6D6D6"}
           style={styles.textInput}
           autoCapitalize="none"
           onChangeText={(val) => detailsInputChange(val)}
         />
         <TextInput
           placeholder="Number of Volunteers Needed"
-          placeholderTextColor={"#d6d6d6"}
+          placeholderTextColor={"#D6D6D6"}
           style={styles.textInput}
           autoCapitalize="none"
           onChangeText={(val) => volunteersInputChange(val)}
         />
         <TextInput
           placeholder="Location"
-          placeholderTextColor={"#d6d6d6"}
+          placeholderTextColor={"#D6D6D6"}
           style={styles.textInput}
           autoCapitalize="none"
           onChangeText={(val) => locationInputChange(val)}
         />        
         <TextInput
         placeholder="Date"
-        placeholderTextColor={"#d6d6d6"}
+        placeholderTextColor={"#D6D6D6"}
         style={styles.textInput}
         autoCapitalize="none"
         onChangeText={(val) => DateInputChange(val)}
         />
-
         <TouchableOpacity
           onPress={() => navigateToTaskList()}
           style={[
@@ -168,13 +156,12 @@ export default function createTask() {
             Cancel
           </Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           onPress={() => handlePress()}
           style={[
             styles.signIn,
             {
-              backgroundColor: "#013d38",
+              backgroundColor: "#013D38",
               marginTop: 15,
             },
           ]}
@@ -194,7 +181,6 @@ export default function createTask() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -231,20 +217,20 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   text_footer: {
-    color: "#05375a",
+    color: "#05375A",
     fontSize: 18,
   },
   action: {
     flexDirection: "column",
     marginTop: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
+    borderBottomColor: "#F2F2F2",
     paddingBottom: 5,
   },
   textInput: {
     marginTop: Platform.OS === "ios" ? 0 : 0,
     paddingLeft: 10,
-    backgroundColor: "#0bbfb1",
+    backgroundColor: "#0BBFB1",
     borderWidth: 1,
     borderRadius: 10,
     borderColor: "#009387",

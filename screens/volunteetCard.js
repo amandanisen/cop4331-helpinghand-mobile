@@ -31,6 +31,8 @@ export default function CoordCard(props) {
       <Text style={{ marginBottom: 10, color: "#808080" }}>
         {"Coordinates:  " +props.task_location[0] + "     " + props.task_location[1]}
       </Text>
+      <Text style={{ marginBottom: 10 }}>{props.task_date}</Text>
+
       <Button
         icon={<Icon name="check" color="#ffffff" />}
         onPress={() => closeTask()}

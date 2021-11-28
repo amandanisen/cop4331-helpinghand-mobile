@@ -105,6 +105,8 @@ export default function volunteerTask() {
         task_location={tasks.task_location.coordinates}
         maxVol={tasks.max_slots}
         numVol={tasks.slots_available}
+        task_date={tasks.task_date}
+
       />
     ));
   }

@@ -1,10 +1,8 @@
-
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useRef, useEffect } from "react";
 import { FloatingAction } from "react-native-floating-action";
 import CoordCard from "./coordCard";
 import { useLocation } from "react-router-dom";
-
 import {
   View,
   Text,
@@ -17,10 +15,7 @@ import {
 } from "react-native";
 import { Card, ListItem, Icon } from "react-native-elements";
 import { connect } from "react-redux";
-
 //const buildPath = require("../../redux/buildPath");
-
-
 export default function coortinatorTask() {
   const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
@@ -28,10 +23,6 @@ export default function coortinatorTask() {
   const [selected, setSelected] = useState({});
   let idTrack = useRef(null);
   var user_data=localStorage.getItem("user_data");
-
-
-
-
   useEffect(() => {
     if (tasks && tasks.length > 0 && Object.values(selected).length === 0) {
       let taskObj = {};
@@ -39,14 +30,11 @@ export default function coortinatorTask() {
       setSelected(taskObj);
     }
   }, [tasks, selected]);
-
-
   useEffect(() =>{
     async function handleSubmit(){
       var obj = {email:'alexrutledge1030@gmail.com'};
       var js=JSON.stringify(obj);
       console.log(js);
-
       try{
         const response = await fetch("https://helpinghand-cop4331.herokuapp.com/coord/tasks",{
           method: "POST",
@@ -58,7 +46,6 @@ export default function coortinatorTask() {
           console.log(res.error);
         } else{
           console.log("success");
-          
           if(res != "nos such user found"){
             setPosts(res);
           } else{
@@ -74,7 +61,6 @@ export default function coortinatorTask() {
       //test
     handleSubmit();
   }, []);
-
   const handleSelect = (id) => {
     let newSelected = { ...selected };
     if (idTrack.current === null) {
@@ -99,9 +85,6 @@ export default function coortinatorTask() {
     }
     idTrack.current = id;
   };
-
-
-
   //actions for the floating action button
   const actions = [
     {
@@ -110,18 +93,14 @@ export default function coortinatorTask() {
       position: 1,
     },
   ];
-
   //function to navigate back to task list on cancel
   function navigateToCreateTask() {
     navigation.navigate("CreateTask");
   }
-
   
-
   //function to render the card template / replace with actual json obj returned
   function renderCards() {
     console.log(posts);
-
     return posts.map((tasks,index) => (
       <CoordCard   
         key={tasks._id}
@@ -130,18 +109,17 @@ export default function coortinatorTask() {
         task_location={tasks.task_location.coordinates}
         maxVol={tasks.max_slots}
         numVol={tasks.slots_available}
-
+        task_date={tasks.task_date}
       />
     ));
   }
-
   return (
     <View style={{ flex: 1, alignItems: "center", backgroundColor: "#009387" }}>
       <View style={styles.header}>
         <ScrollView>{renderCards()}</ScrollView>
       </View>
       <FloatingAction
-        color="#013d38"
+        color="#013D38"
         actions={actions}
         onPressItem={() => navigateToCreateTask()}
       />
@@ -149,7 +127,6 @@ export default function coortinatorTask() {
   );
   console.log(tasks)
 }
-
 const styles = StyleSheet.create({
   header: {
     flex: 1,
@@ -161,7 +138,6 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
 });
-
 const areasTest = [
   {
     id: "1",
@@ -193,4 +169,4 @@ const areasTest = [
     numVol: "2",
     maxVol: "6",
   },
-];
+]; 
