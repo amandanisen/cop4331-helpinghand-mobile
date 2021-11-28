@@ -98,8 +98,8 @@ const SignInScreen = ({ navigation }) => {
 
   
   const loginHandle = (userName, password) => {
-    //console.log(userName)
-    //console.log(password)
+    console.log(userName)
+    console.log(password)
     console.log(data.role)
       async function login(){
         var obj = {email:userName,password:password};

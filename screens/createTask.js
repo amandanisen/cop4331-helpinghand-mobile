@@ -15,7 +15,8 @@ export default function createTask() {
     name: "",
     details: "",
     volunteers: "",
-    location: "",
+    longitude: "",
+    latitude: "",
     date: "",
   });
   function handlePress() {
@@ -25,14 +26,14 @@ export default function createTask() {
       name: data.name,
       description: data.details,
       max_slots: data.volunteers,
-      latitude: 28.6,
-      longitude: 81.2,
+      latitude: data.latitude,
+      longitude: data.longitude,
       email: 'alexrutledge1030@gmail.com' ,
       date: data.date,
     }).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
     });
-    console.log(data.name, data.details, data.volunteers, data.location,data.date);
+    console.log(data.name, data.details, data.volunteers, data.longitude, data.latitude,data.date);
     navigateToTaskList();
   }
   // Example POST method implementation:
@@ -77,10 +78,16 @@ export default function createTask() {
       volunteers: val,
     });
   };
-  const locationInputChange = (val) => {
+  const longitudeInputChange = (val) => {
     setData({
       ...data,
-      location: val,
+      longitude: val,
+    });
+  };
+  const latitudeInputChange = (val) => {
+    setData({
+      ...data,
+      latitude: val,
     });
   };
   const DateInputChange = (val) => {
@@ -122,11 +129,18 @@ export default function createTask() {
           onChangeText={(val) => volunteersInputChange(val)}
         />
         <TextInput
-          placeholder="Location"
+          placeholder="Longitude"
           placeholderTextColor={"#D6D6D6"}
           style={styles.textInput}
           autoCapitalize="none"
-          onChangeText={(val) => locationInputChange(val)}
+          onChangeText={(val) => longitudeInputChange(val)}
+        />       
+         <TextInput
+          placeholder="Latitude"
+          placeholderTextColor={"#D6D6D6"}
+          style={styles.textInput}
+          autoCapitalize="none"
+          onChangeText={(val) => latitudeInputChange(val)}
         />        
         <TextInput
         placeholder="Date"
