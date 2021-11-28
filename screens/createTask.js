@@ -24,6 +24,8 @@ export default function createTask() {
   var user_data= JSON.parse(localStorage.getItem("user_data"))
    data.email = user_data.email
    console.log(data.email)
+
+   
   const handlePress = () => {
     //console.log(userName)
     //console.log(password)
@@ -40,10 +42,13 @@ export default function createTask() {
             body : js,
           });
           var res=JSON.parse(await response.text());
-          if (res.error != null){
-            console.log(res.error);  
-          } 
-            
+          if (res.id<0){
+            console.log(res.error); 
+            alert("task creation was not successful please make sure all required fields are filled correctly")
+          }
+          else
+          { navigation.navigate("CoordinatorTasks");}
+
           }
              catch (e){
           alert(e.toString());
