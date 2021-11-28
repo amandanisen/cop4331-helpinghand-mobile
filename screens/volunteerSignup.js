@@ -19,9 +19,14 @@ import Feather from 'react-native-vector-icons/Feather';
  const VolunteerSignup = ({navigation}) => {
 
     const [data, setData] = React.useState({
-        username: '',
+        firstName: '',
+        lastName: '',
+        email:'',
         password: '',
         confirm_password: '',
+        acceptedDistance:'',
+        lon:'',
+        lat:'',
         check_textInputChange: false,
         secureTextEntry: true,
         confirm_secureTextEntry: true,
@@ -31,13 +36,96 @@ import Feather from 'react-native-vector-icons/Feather';
         if( val.length !== 0 ) {
             setData({
                 ...data,
-                username: val,
+                firstName: val,
                 check_textInputChange: true
             });
         } else {
             setData({
                 ...data,
-                username: val,
+                firstName: val,
+                check_textInputChange: false
+            });
+        }
+    }
+
+
+    const textInputChange2 = (val) => {
+        if( val.length !== 0 ) {
+            setData({
+                ...data,
+                lastName: val,
+                check_textInputChange: true
+            });
+        } else {
+            setData({
+                ...data,
+                lastName: val,
+                check_textInputChange: false
+            });
+        }
+    }
+
+
+    const textInputChange3 = (val) => {
+        if( val.length !== 0 ) {
+            setData({
+                ...data,
+                email: val,
+                check_textInputChange: true
+            });
+        } else {
+            setData({
+                ...data,
+                email: val,
+                check_textInputChange: false
+            });
+        }
+    }
+
+    const textInputChange4 = (val) => {
+        if( val.length !== 0 ) {
+            setData({
+                ...data,
+                acceptedDistance: val,
+                check_textInputChange: true
+            });
+        } else {
+            setData({
+                ...data,
+                acceptedDistance: val,
+                check_textInputChange: false
+            });
+        }
+    }
+
+    const textInputChange5 = (val) => {
+        if( val.length !== 0 ) {
+            setData({
+                ...data,
+                lon: val,
+                check_textInputChange: true
+            });
+        } else {
+            setData({
+                ...data,
+                lon: val,
+                check_textInputChange: false
+            });
+        }
+    }
+
+
+    const textInputChange6 = (val) => {
+        if( val.length !== 0 ) {
+            setData({
+                ...data,
+                lat: val,
+                check_textInputChange: true
+            });
+        } else {
+            setData({
+                ...data,
+                lat: val,
                 check_textInputChange: false
             });
         }
@@ -71,6 +159,52 @@ import Feather from 'react-native-vector-icons/Feather';
         });
     }
 
+
+    const registerVol = () => {
+        //console.log(userName)
+        //console.log(password)
+        //console.log(data.role)
+          async function register(){
+            var obj = {first_name:data.firstName,last_name:data.lastName,email:data.email,password1:data.password, password2:data.confirm_password
+            ,accepted_distance:data.acceptedDistance,longitude:data.lon,latitude:data.lat};
+            var js=JSON.stringify(obj);
+            console.log(js);
+            try{
+              const response = await fetch("https://helpinghand-cop4331.herokuapp.com/vol/register",{
+                method: "POST",
+                headers: {"Content-Type" : "application/json"},
+                body : js,
+              });
+              var res=JSON.parse(await response.text() );
+              if (res.error != null){
+                console.log(res.error);
+              }   
+                if(res.id ==-1)
+                {
+                    alert("Sign up failed try again!")
+                }
+                if(res.id>0){
+                navigation.navigate("Login");}
+                console.log(res)
+                console.log(res.id)
+                //console.log(res.username)
+                //console.log(res.password)
+            } catch (e){
+              alert(e.toString());
+              return ;
+              
+            }
+          }
+            //test
+          register();
+       ;
+        //handleMessage(null);
+      };
+
+
+
+
+
     return (
       <View style={styles.container}>
           <StatusBar backgroundColor='#009387' barStyle="light-content"/>
@@ -83,7 +217,7 @@ import Feather from 'react-native-vector-icons/Feather';
             style={styles.footer}
         >
             <ScrollView>
-             <Text style={styles.text_footer}>Full Name</Text>
+             <Text style={styles.text_footer}>First and Last Name</Text>
              <View style={styles.action}>
                  <FontAwesome 
                     name="user-o"
@@ -91,10 +225,34 @@ import Feather from 'react-native-vector-icons/Feather';
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Your full name"
+                    placeholder="Your first name"
                     style={styles.textInput}
                     autoCapitalize="none"
                     onChangeText={(val) => textInputChange(val)}
+                />
+                {data.check_textInputChange ? 
+                <Animatable.View
+                    animation="bounceIn"
+                >
+                    {/* <Feather 
+                        name="check-circle"
+                        color="green"
+                        size={20}
+                    /> */}
+                </Animatable.View>
+                : null}
+            </View>
+            <View style={styles.action}>
+                 <FontAwesome 
+                    name="user-o"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Your last name"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => textInputChange2(val)}
                 />
                 {data.check_textInputChange ? 
                 <Animatable.View
@@ -119,7 +277,7 @@ import Feather from 'react-native-vector-icons/Feather';
                     placeholder="Your Email"
                     style={styles.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => textInputChange(val)}
+                    onChangeText={(val) => textInputChange3(val)}
                 />
                 {data.check_textInputChange ? 
                 <Animatable.View
@@ -151,6 +309,40 @@ import Feather from 'react-native-vector-icons/Feather';
                 />
                 <TouchableOpacity
                     onPress={updateSecureTextEntry}
+                  
+                >
+                    {data.secureTextEntry ? 
+                    <Feather 
+                        name="eye-off"
+                        color="grey"
+                        size={20}
+                    />
+                    :
+                    <Feather 
+                        name="eye"
+                        color="grey"
+                        size={20}
+                    />
+                    }
+                </TouchableOpacity>
+            </View>
+ 
+            <View style={styles.action}>
+                <Feather 
+                    name="lock"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="Confirm Password"
+                    secureTextEntry={data.secureTextEntry ? true : false}
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => handleConfirmPasswordChange(val)}
+                />
+                <TouchableOpacity
+                    onPress={updateSecureTextEntry}
+                    
                 >
                     {data.secureTextEntry ? 
                     <Feather 
@@ -168,6 +360,34 @@ import Feather from 'react-native-vector-icons/Feather';
                 </TouchableOpacity>
             </View>
 
+            <Text style={[styles.text_footer, {marginTop: 25}]}>Accepted Distance (Miles)</Text>
+            <View style={styles.action}>
+             <Feather 
+                    name="map-pin"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="1,2,3 etc"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => textInputChange4(val)}
+                />
+                {data.check_textInputChange ? 
+                <Animatable.View
+                    animation="bounceIn"
+                >
+                    {/* <Feather 
+                        name="check-circle"
+                        color="green"
+                        size={20}
+                    /> */}
+                </Animatable.View>
+                : null}
+            </View>
+
+        
+
             <Text style={[styles.text_footer, {marginTop: 25}]}>Location</Text>
              <View style={styles.action}>
              <Feather 
@@ -176,10 +396,10 @@ import Feather from 'react-native-vector-icons/Feather';
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Your location"
+                    placeholder="Longitude"
                     style={styles.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => textInputChange(val)}
+                    onChangeText={(val) => textInputChange5(val)}
                 />
                 {data.check_textInputChange ? 
                 <Animatable.View
@@ -193,18 +413,18 @@ import Feather from 'react-native-vector-icons/Feather';
                 </Animatable.View>
                 : null}
             </View>
-            <Text style={[styles.text_footer, {marginTop: 25}]}>Minimum distance of task</Text>
-             <View style={styles.action}>
+
+            <View style={styles.action}>
              <Feather 
-                    name="map"
+                    name="map-pin"
                     color="#05375a"
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Min distance"
+                    placeholder="Latitude"
                     style={styles.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => textInputChange(val)}
+                    onChangeText={(val) => textInputChange6(val)}
                 />
                 {data.check_textInputChange ? 
                 <Animatable.View
@@ -218,6 +438,9 @@ import Feather from 'react-native-vector-icons/Feather';
                 </Animatable.View>
                 : null}
             </View>
+
+
+              
             <View style={styles.button}>
                 <TouchableOpacity
                     style={styles.signIn}
@@ -234,7 +457,9 @@ import Feather from 'react-native-vector-icons/Feather';
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={() => navigation.goBack()}
+                      onPress={() => {
+                        registerVol();
+                      }}
                     style={[styles.signIn, {
                         borderColor: '#009387',
                         borderWidth: 1,
@@ -325,3 +550,4 @@ const styles = StyleSheet.create({
         color: 'grey'
     }
   });
+
