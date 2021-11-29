@@ -1,3 +1,5 @@
+
+    
 import React from "react";
 import {
   View,
@@ -17,6 +19,7 @@ export default function CoordCard(props) {
   
      function closeTask() {
       async function close(){
+        console.log(user_data.email)
         var obj = {email:user_data.email,taskID:props.id};
         var js=JSON.stringify(obj);
         console.log(js);
@@ -91,5 +94,3 @@ export default function CoordCard(props) {
     </Card>
   );
 }
-
-    
