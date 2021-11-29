@@ -35,6 +35,8 @@ export default function volunteerTask() {
 
   useEffect(() =>{
     async function handleSubmit(){
+      console.log(user_data.email)
+      console.log(user_data.id)
       var obj = {email:user_data.email};
       var js=JSON.stringify(obj);
       console.log(js);
@@ -102,10 +104,12 @@ export default function volunteerTask() {
         key={tasks._id}
         name={tasks.task_name}
         description={tasks.task_description}
+        address={tasks.task_address}
         task_location={tasks.task_location.coordinates}
         maxVol={tasks.max_slots}
         numVol={tasks.slots_available}
         task_date={tasks.task_date}
+        id = {tasks._id}
 
       />
     ));
