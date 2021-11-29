@@ -48,8 +48,12 @@ export default function createTask() {
             alert("Task creation was not successful. Please confirm all required fields are filled correctly")
           }
           else
-          { alert("Task was created successfully! Please Relogin for updated list!")
-            navigation.navigate("Login");
+          { 
+           // alert("Task was created successfully! Please Relogin for updated list!")
+           setTimeout(function(){
+            navigation.navigate("CoordinatorTasks");
+          }, 1500);
+           
             }
             
           }

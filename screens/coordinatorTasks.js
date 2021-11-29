@@ -19,10 +19,48 @@ import { Card, ListItem, Icon } from "react-native-elements";
 import { connect } from "react-redux";
 
 //const buildPath = require("../../redux/buildPath");
+const coordinatorTask = ({navigation}) => {    
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('Refreshed');
+      async function handleSubmit(){
+        console.log(localStorage.getItem("user_data"))
+        console.log(user_data.email)
+        var obj = {email:user_data.email};
+        var js=JSON.stringify(obj);
+        console.log(js);
+  
+        try{
+          const response = await fetch("https://helpinghand-cop4331.herokuapp.com/coord/tasks",{
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body : js,
+          });
+          var res=JSON.parse(await response.text() );
+          console.log(res);
+          if (res.error != null){
+            console.log(res.error);
+          } else{
+            console.log("success");  
+            if(res != "no such user found"){
+              setPosts(res);
+            } else{
+              console.log("No user was found");
+            }
+            return res;
+          }
+        } catch (e){
+          alert(e.toString());
+          return ;
+        }
+      }
+        //test
+      handleSubmit();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
 
-export default function coortinatorTask() {
-  const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [selected, setSelected] = useState({});
@@ -40,74 +78,6 @@ export default function coortinatorTask() {
     }
   }, [tasks, selected]);
 
-
-  useEffect(() =>{
-    async function handleSubmit(){
-      console.log(localStorage.getItem("user_data"))
-      console.log(user_data.email)
-      var obj = {email:user_data.email};
-      var js=JSON.stringify(obj);
-      console.log(js);
-
-      try{
-        const response = await fetch("https://helpinghand-cop4331.herokuapp.com/coord/tasks",{
-          method: "POST",
-          headers: {"Content-Type" : "application/json"},
-          body : js,
-        });
-        var res=JSON.parse(await response.text() );
-        if (res.error != null){
-          console.log(res.error);
-        } else{
-          console.log("success");  
-          if(res != "nos such user found"){
-            setPosts(res);
-          } else{
-            console.log("The call might have failed above buts its okay, there were no tasks");
-          }
-          return res;
-        }
-      } catch (e){
-        alert(e.toString());
-        return ;
-      }
-    }
-      //test
-    handleSubmit();
-  }, []);
-
-  const handleSelect = (id) => {
-    let newSelected = { ...selected };
-    if (idTrack.current === null) {
-      idTrack.current = id;
-
-
-
-
-
-
-
-      
-    }
-    if (selected[id]) {
-      // We are leaving the task
-      //Socket.send(JSON.stringify({topic: "task", action: "leave", message: {id: id, action: "Leaving"}}));
-      newSelected[id] = false;
-      setSelected(newSelected);
-    } else {
-      // We are joining the task
-      if (idTrack.current !== id) {
-        //Socket.send(JSON.stringify({topic: "task", action: "leave", message: {id: idTrack.current, action: "Leaving"}}));
-      }
-      //Socket.send(JSON.stringify({topic: "task", action: "join", message: {id: id, action: "Joining"}}));
-      for (const prop in newSelected) {
-        newSelected[prop] = false;
-      }
-      newSelected[id] = true;
-      setSelected(newSelected);
-    }
-    idTrack.current = id;
-  };
 
 
 
@@ -161,6 +131,9 @@ export default function coortinatorTask() {
   );
   console.log(tasks)
 }
+export default coordinatorTask;
+
+
 
 const styles = StyleSheet.create({
   header: {

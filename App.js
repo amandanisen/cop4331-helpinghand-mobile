@@ -11,6 +11,7 @@ import VolunteerSignup from "./screens/volunteerSignup";
 import CreateTask from "./screens/createTask";
 import CoordinatorTasks from "./screens/coordinatorTasks";
 import VolunteerTasks from "./screens/volunteerTasks";
+import Refresh from "./screens/refresh";
 
 const AppStack = createStackNavigator();
 export default function Navigator() {
@@ -22,6 +23,7 @@ export default function Navigator() {
         <AppStack.Screen name="CreateTask" component={CreateTask} />
         <AppStack.Screen name="CoordinatorTasks" component={CoordinatorTasks} />
         <AppStack.Screen name="VolunteerTasks" component={VolunteerTasks} />
+        <AppStack.Screen name="Refresh" component={Refresh} />
         <AppStack.Screen
           name="CoordinatorSignup"
           component={CoordinatorSignup}

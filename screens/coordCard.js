@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -10,15 +11,16 @@ import {
 
 import { Card, ListItem, Icon, Button } from "react-native-elements";
 var user_data= JSON.parse(localStorage.getItem("user_data"));
+var user_email = user_data.email;
 
 
 export default function CoordCard(props) {
-
+  const navigation = useNavigation();
   
      function closeTask() {
       async function close(){
-        console.log(user_data.email)
-        var obj = {email:user_data.email,taskID:props.id};
+        console.log(user_email)
+        var obj = {email:user_email,taskID:props.id};
         var js=JSON.stringify(obj);
         console.log(js);
 
@@ -35,12 +37,6 @@ export default function CoordCard(props) {
           } else{
             console.log(res.success);
             console.log("success");
-            
-            if(res != "nos such user found"){
-              setPosts(res);
-            } else{
-              console.log("The call might have failed above buts its okay, there were no tasks");
-            }
             return res;
           }
         } catch (e){
@@ -53,7 +49,10 @@ export default function CoordCard(props) {
       }
         //test
       close();
-       ;
+      navigation.navigate("Refresh");
+      setTimeout(function(){
+        navigation.navigate("CoordinatorTasks");
+      }, 400);
     //make api call to close task
     //pass task id i assume
     console.log("clicked close task");
@@ -64,6 +63,7 @@ export default function CoordCard(props) {
   console.log(props.id)
   console.log(props.address)
   return (
+    
     <Card borderRadius={5}>
       <Card.Title style={{ fontSize: 20, marginBottom: 2 }}>
         {" "}
