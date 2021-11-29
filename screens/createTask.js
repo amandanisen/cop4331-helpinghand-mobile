@@ -26,14 +26,14 @@ export default function createTask() {
       name: data.name,
       description: data.details,
       max_slots: data.volunteers,
-      latitude: parseFloat(data.latitude),
-      longitude: parseFloat(data.longitude),
+      latitude: data.latitude,
+      longitude: data.longitude,
       email: 'alexrutledge1030@gmail.com' ,
       date: data.date,
     }).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
     });
-    console.log(data.name, data.details, data.volunteers, parseFloat(data.latitude), parseFloat(data.longitude),data.date);
+    console.log(data.name, data.details, data.volunteers, data.longitude, data.latitude,data.date);
     navigateToTaskList();
   }
   // Example POST method implementation:
