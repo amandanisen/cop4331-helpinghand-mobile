@@ -16,24 +16,10 @@ import {
 } from "react-native";
 import { Card, ListItem, Icon } from "react-native-elements";
 
-export default function volunteerTask() {
-  const navigation = useNavigation();
-  const [posts, setPosts] = useState([]);
-  const [tasks, setTasks] = useState([]);
-  const [selected, setSelected] = useState({});
-  let idTrack = useRef(null);
-  var user_data= JSON.parse(localStorage.getItem("user_data"))
-
-
+const volunteerTask = ({navigation}) => {    
   useEffect(() => {
-    if (tasks && tasks.length > 0 && Object.values(selected).length === 0) {
-      let taskObj = {};
-      tasks.forEach((task) => (taskObj[task.id] = false));
-      setSelected(taskObj);
-    }
-  }, [tasks, selected]);
-
-  useEffect(() =>{
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('Refreshed');
     async function handleSubmit(){
       console.log(user_data.email)
       console.log(user_data.id)
@@ -67,34 +53,28 @@ export default function volunteerTask() {
     }
       //test
     handleSubmit();
-  }, []);
+  });
+  return unsubscribe;
+}, [navigation]);
 
-  const handleSelect = (id) => {
-    let newSelected = { ...selected };
-    if (idTrack.current === null) {
-      idTrack.current = id;
+  
+  const [posts, setPosts] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [selected, setSelected] = useState({});
+  let idTrack = useRef(null);
+  var user_data= JSON.parse(localStorage.getItem("user_data"))
+
+
+  useEffect(() => {
+    if (tasks && tasks.length > 0 && Object.values(selected).length === 0) {
+      let taskObj = {};
+      tasks.forEach((task) => (taskObj[task.id] = false));
+      setSelected(taskObj);
     }
-    if (selected[id]) {
-      // We are leaving the task
-      //Socket.send(JSON.stringify({topic: "task", action: "leave", message: {id: id, action: "Leaving"}}));
-      newSelected[id] = false;
-      setSelected(newSelected);
-    } else {
-      // We are joining the task
-      if (idTrack.current !== id) {
-        //Socket.send(JSON.stringify({topic: "task", action: "leave", message: {id: idTrack.current, action: "Leaving"}}));
-      }
-      //Socket.send(JSON.stringify({topic: "task", action: "join", message: {id: id, action: "Joining"}}));
-      for (const prop in newSelected) {
-        newSelected[prop] = false;
-      }
-      newSelected[id] = true;
-      setSelected(newSelected);
-    }
-    idTrack.current = id;
-  };
+  }, [tasks, selected]);
 
 
+  
   //function to render the card template / replace with actual json obj returned
   function renderCards() {
     console.log(posts);
@@ -123,6 +103,7 @@ export default function volunteerTask() {
     </View>
   );
 }
+export default volunteerTask;
 
 const styles = StyleSheet.create({
   header: {
