@@ -44,10 +44,12 @@ export default function createTask() {
           var res=JSON.parse(await response.text());
           if (res.id<0){
             console.log(res.error); 
-            alert("task creation was not successful please make sure all required fields are filled correctly")
+            alert("Task creation was not successful. Please confirm all required fields are filled correctly")
           }
           else
-          { navigation.navigate("CoordinatorTasks");}
+          { alert("Task was created successfully! Please Relogin for updated list!")
+            navigation.navigate("Login");
+            }
 
           }
              catch (e){
