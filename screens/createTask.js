@@ -18,7 +18,8 @@ export default function createTask() {
     lon: "",
     lat:"",
     date:"",
-    email:""
+    email:"",
+    location:""
   });
    
   var user_data= JSON.parse(localStorage.getItem("user_data"))
@@ -31,7 +32,7 @@ export default function createTask() {
     //console.log(password)
       async function create(){
         var obj = {name:data.name,description:data.details,date:data.date,max_slots:data.volunteers,
-                   latitude:data.lat,longitude:data.lon,email:data.email};
+                   latitude:data.lat,longitude:data.lon,email:data.email,address:data.location};
                    console.log(data.lon)
         var js=JSON.stringify(obj);
         //console.log(js);
@@ -50,7 +51,7 @@ export default function createTask() {
           { alert("Task was created successfully! Please Relogin for updated list!")
             navigation.navigate("Login");
             }
-
+            
           }
              catch (e){
           alert(e.toString());
@@ -123,6 +124,14 @@ export default function createTask() {
       lon: parseFloat(val),
     });
   };
+
+  const locationInputChange3 = (val) => {
+    setData({
+      ...data,
+      location:val,
+    });
+  };
+
   const DateInputChange = (val) => {
     setData({
       ...data,
@@ -181,6 +190,13 @@ export default function createTask() {
         style={styles.textInput}
         autoCapitalize="none"
         onChangeText={(val) => DateInputChange(val)}
+        />
+        <TextInput
+        placeholder="Address"
+        placeholderTextColor={"#D6D6D6"}
+        style={styles.textInput}
+        autoCapitalize="none"
+        onChangeText={(val) => locationInputChange3(val)}
         />
         <TouchableOpacity
           onPress={() => navigateToTaskList()}
