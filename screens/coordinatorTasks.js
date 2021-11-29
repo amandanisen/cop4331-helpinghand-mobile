@@ -1,3 +1,4 @@
+
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useRef, useEffect } from "react";
 import { FloatingAction } from "react-native-floating-action";
@@ -140,6 +141,7 @@ export default function coortinatorTask() {
         maxVol={tasks.max_slots}
         numVol={tasks.slots_available}
         id = {tasks._id}
+        address ={tasks.task_address}
 
       />
     ));
@@ -204,4 +206,3 @@ const areasTest = [
     maxVol: "6",
   },
 ];
-
