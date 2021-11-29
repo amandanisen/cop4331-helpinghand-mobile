@@ -124,7 +124,11 @@ const SignInScreen = ({ navigation }) => {
 
           var res=JSON.parse(await response.text() );
           if (res.id<0){
-            console.log(res.error);
+            console.log(res.errors);
+            if(res.errors.email!= null)
+            alert(res.errors.email)
+            if(res.errors.password!= null)
+            alert(res.errors.password)
           }
           else{
             var user = {
@@ -151,7 +155,7 @@ const SignInScreen = ({ navigation }) => {
             console.log(res)
             console.log(res.id)
         } catch (e){
-          alert(e.toString());
+          //alert(e.toString());
           return ;
         }
       }
