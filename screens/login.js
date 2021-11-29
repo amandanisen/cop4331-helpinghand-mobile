@@ -98,24 +98,39 @@ const SignInScreen = ({ navigation }) => {
 
   
   const loginHandle = (userName, password) => {
-    console.log(userName)
-    console.log(password)
+    //console.log(userName)
+    //console.log(password)
     console.log(data.role)
       async function login(){
         var obj = {email:userName,password:password};
         var js=JSON.stringify(obj);
         //console.log(js);
         try{
-          const response = await fetch("https://helpinghand-cop4331.herokuapp.com/vol/login",{
+          let response;
+          if(data.role=="volunteer") 
+           response = await fetch("https://helpinghand-cop4331.herokuapp.com/vol/login",{
             method: "POST",
             headers: {"Content-Type" : "application/json"},
             body : js,
           });
+
+          else
+          response = await fetch("https://helpinghand-cop4331.herokuapp.com/coord/login",{
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body : js,
+          });
+        
+
           var res=JSON.parse(await response.text() );
-          if (res.error != null){
-            console.log(res.error);
-            console.log(res.email)
-          } else{
+          if (res.id<0){
+            console.log(res.errors);
+            if(res.errors.email!= null)
+            alert(res.errors.email)
+            if(res.errors.password!= null)
+            alert(res.errors.password)
+          }
+          else{
             var user = {
               first_name: res.first_name,
               last_name: res.last_name,
@@ -134,13 +149,13 @@ const SignInScreen = ({ navigation }) => {
             { navigation.navigate("CoordinatorTasks");}
 
 
-            if(res.id== -1)
+            if(res.id == -1)
             alert("incorrect username or password")
           }
             console.log(res)
             console.log(res.id)
         } catch (e){
-          alert(e.toString());
+          //alert(e.toString());
           return ;
         }
       }
@@ -149,7 +164,7 @@ const SignInScreen = ({ navigation }) => {
    ;
     //handleMessage(null);
   };
-
+  
   
   return (
     <View style={styles.container}>

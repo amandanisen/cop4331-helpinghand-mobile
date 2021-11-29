@@ -59,8 +59,7 @@ export default function coortinatorTask() {
         if (res.error != null){
           console.log(res.error);
         } else{
-          console.log("success");
-          
+          console.log("success");  
           if(res != "nos such user found"){
             setPosts(res);
           } else{
@@ -81,6 +80,14 @@ export default function coortinatorTask() {
     let newSelected = { ...selected };
     if (idTrack.current === null) {
       idTrack.current = id;
+
+
+
+
+
+
+
+      
     }
     if (selected[id]) {
       // We are leaving the task
@@ -123,6 +130,7 @@ export default function coortinatorTask() {
   //function to render the card template / replace with actual json obj returned
   function renderCards() {
     console.log(posts);
+    
 
     return posts.map((tasks,index) => (
       <CoordCard   
@@ -132,6 +140,8 @@ export default function coortinatorTask() {
         task_location={tasks.task_location.coordinates}
         maxVol={tasks.max_slots}
         numVol={tasks.slots_available}
+        id = {tasks._id}
+        address ={tasks.task_address}
 
       />
     ));
