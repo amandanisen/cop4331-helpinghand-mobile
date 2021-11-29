@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -13,6 +14,7 @@ var user_data= JSON.parse(localStorage.getItem("user_data"));
 
 
 export default function CoordCard(props) {
+  const navigation = useNavigation();
   function closeTask() {
     async function close(){
       console.log(user_data.email)
@@ -33,12 +35,6 @@ export default function CoordCard(props) {
         } else{
           console.log(res.success);
           console.log("success");
-          
-          if(res != "nos such user found"){
-            setPosts(res);
-          } else{
-            console.log("The call might have failed above buts its okay, there were no tasks");
-          }
           return res;
         }
       } catch (e){
@@ -51,6 +47,10 @@ export default function CoordCard(props) {
     }
       //test
     close();
+    navigation.navigate("Refresh");
+      setTimeout(function(){
+        navigation.navigate("VolunteerTasks");
+      }, 400);
      ;
   //make api call to close task
   //pass task id i assume
