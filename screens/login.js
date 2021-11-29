@@ -8,7 +8,9 @@ import {
   StyleSheet,
   StatusBar,
   Alert,
+  AsyncStorage ,
 } from "react-native";
+
 import * as Animatable from "react-native-animatable";
 import Feather from "react-native-vector-icons/Feather";
 import RadioForm, {
@@ -137,8 +139,20 @@ const SignInScreen = ({ navigation }) => {
               id: res.id,
               email:res.email
             };
+
+
+            const saveData = async () => {
+              try {
+                await AsyncStorage.setItem('user_data', user)
+                 alert("successfully saved data");
+              } catch (e) {
+                alert('Failed to save the data to the storage')
+              }
+            }
+            saveData();
             
-            localStorage.setItem("user_data", JSON.stringify(user));  
+            
+           // localStorage.setItem("user_data", JSON.stringify(user));  
             console.log(user.email)
             
              if(res.id!=-1 && data.role == "volunteer" && res.id!=null)

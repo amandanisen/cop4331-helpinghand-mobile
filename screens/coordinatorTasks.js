@@ -24,7 +24,7 @@ const coordinatorTask = ({navigation}) => {
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('Refreshed');
       async function handleSubmit(){
-        console.log(localStorage.getItem("user_data"))
+      
         console.log(user_data.email)
         var obj = {email:user_data.email};
         var js=JSON.stringify(obj);
@@ -65,8 +65,20 @@ const coordinatorTask = ({navigation}) => {
   const [tasks, setTasks] = useState([]);
   const [selected, setSelected] = useState({});
   let idTrack = useRef(null);
-  var user_data= JSON.parse(localStorage.getItem("user_data"))
-
+  var user_data;
+  
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user_data');
+      if (value !== null) {
+        user_data= JSON.parse(localStorage.getItem("user_data"))
+        console.log(value);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+_retrieveData();
 
 
 

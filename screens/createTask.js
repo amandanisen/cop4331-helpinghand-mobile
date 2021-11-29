@@ -7,6 +7,7 @@ import {
   TextInput,
   Platform,
   StyleSheet,
+  AsyncStorage,
 } from "react-native";
 export default function createTask() {
   const navigation = useNavigation();
@@ -22,7 +23,23 @@ export default function createTask() {
     location:""
   });
    
-  var user_data= JSON.parse(localStorage.getItem("user_data"))
+  var user_data;
+
+
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user_data');
+      if (value !== null) {
+        user_data= JSON.parse(localStorage.getItem("user_data"))
+        console.log(value);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+_retrieveData();
+
+
    data.email = user_data.email
    console.log(data.email)
 

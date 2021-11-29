@@ -10,13 +10,27 @@ import {
 } from "react-native";
 
 import { Card, ListItem, Icon, Button } from "react-native-elements";
-var user_data= JSON.parse(localStorage.getItem("user_data"));
-var user_email = user_data.email;
+var user_data;
+
+
 
 
 export default function CoordCard(props) {
   const navigation = useNavigation();
-  
+
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user_data');
+      if (value !== null) {
+        user_data= JSON.parse(localStorage.getItem("user_data"))
+        console.log(value);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+_retrieveData();
+  var user_email = user_data.email;
      function closeTask() {
       async function close(){
         console.log(user_email)

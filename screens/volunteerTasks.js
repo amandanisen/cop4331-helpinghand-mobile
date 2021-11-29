@@ -21,8 +21,25 @@ const volunteerTask = ({navigation}) => {
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('Refreshed');
     async function handleSubmit(){
+
+  var user_data;
+
+  const retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user_data');
+      if (value !== null) {
+        user_data= JSON.parse(value.getItem("user_data"))
+        console.log(value);
+      }
+    } catch (error) {
+      console.log("value null");
+      // Error retrieving data
+    }
+  };
+
+  retrieveData();
+
       console.log(user_data.email)
-      console.log(user_data.id)
       var obj = {email:user_data.email};
       var js=JSON.stringify(obj);
       console.log(js);
@@ -62,8 +79,6 @@ const volunteerTask = ({navigation}) => {
   const [tasks, setTasks] = useState([]);
   const [selected, setSelected] = useState({});
   let idTrack = useRef(null);
-  var user_data= JSON.parse(localStorage.getItem("user_data"))
-
 
   useEffect(() => {
     if (tasks && tasks.length > 0 && Object.values(selected).length === 0) {
